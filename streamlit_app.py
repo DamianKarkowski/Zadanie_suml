@@ -73,26 +73,37 @@ if option == "Wydźwięk emocjonalny tekstu (eng)":
 
 st.header('Tłumaczenie tekstu z języka angielskiego na niemiecki')
 st.write('Aby przetłumaczyć tekst z języka angielskiego na niemiecki, wpisz tekst w polu poniżej i naciśnij (na MAC OS command + enter))')
-from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
 
-st.spinner()
-with st.spinner(text='Pracuję...'):
+from sentence_transformers import SentenceTransformer
 
-    write_model = MBartForConditionalGeneration.from_pretrained("SnypzZz/Llama2-13b-Language-translate")
-    write_tokenizer = MBart50TokenizerFast.from_pretrained("SnypzZz/Llama2-13b-Language-translate", src_lang="en_XX")
-    st.success('Done')
-
-model = write_model
-tokenizer = write_tokenizer
+model = SentenceTransformer('T-Systems-onsite/cross-en-de-roberta-sentence-transformer')
 
 text = st.text_area(label="Wpisz tekst do przetłumaczenia")
 if text:
-    model_inputs = tokenizer(text, return_tensors="pt")
-    generated_tokens = model.generate(
-        **model_inputs,
-        forced_bos_token_id=tokenizer.lang_code_to_id["de_DE"]
-    )
-    st.write(tokenizer.batch_decode(generated_tokens, skip_special_tokens=True))
+    st.spinner()
+    with st.spinner(text='Pracuję...'):
+        translator = pipeline("translation_en_to_de")
+        translation = translator(text, max_length=40)[0]['translation_text']
+        st.write(translation)
+
+# st.spinner()
+# with st.spinner(text='Pracuję...'):
+#
+#     write_model = MBartForConditionalGeneration.from_pretrained("SnypzZz/Llama2-13b-Language-translate")
+#     write_tokenizer = MBart50TokenizerFast.from_pretrained("SnypzZz/Llama2-13b-Language-translate", src_lang="en_XX")
+#     st.success('Done')
+#
+# model = write_model
+# tokenizer = write_tokenizer
+#
+# text = st.text_area(label="Wpisz tekst do przetłumaczenia")
+# if text:
+#     model_inputs = tokenizer(text, return_tensors="pt")
+#     generated_tokens = model.generate(
+#         **model_inputs,
+#         forced_bos_token_id=tokenizer.lang_code_to_id["de_DE"]
+#     )
+#     st.write(tokenizer.batch_decode(generated_tokens, skip_special_tokens=True))
 
 st.write('s22418')
 
