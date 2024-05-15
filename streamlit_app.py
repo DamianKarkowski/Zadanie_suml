@@ -26,38 +26,37 @@ with st.echo():
 df = pd.read_csv("DSP_4.csv", sep =';')
 st.dataframe(df)
 
-st.header('Przetwarzanie języka naturalnego')
+st.header('Przetwarzanie języka naturalnego oraz tłumaczenie tekstu')
+
+st.subheader('Wybierz jedną z opcji:')
+st.write('🐞 Wydźwięk emocjonalny tekstu (eng)')
+st.write('🐞 Tłumaczenie tekstu z języka angielskiego na niemiecki')
 
 
 option = st.selectbox(
     "Opcje",
     [
         "Wydźwięk emocjonalny tekstu (eng)",
-        "???",
+        "Tłumaczenie tekstu z języka angielskiego na niemiecki",
     ],
 )
 
 if option == "Wydźwięk emocjonalny tekstu (eng)":
     text = st.text_area(label="Wpisz tekst")
     if text:
-        classifier = pipeline("sentiment-analysis")
-        answer = classifier(text)
-        st.write(answer)
+        with st.spinner(text='Analizuję tekst...'):
+            classifier = pipeline("sentiment-analysis")
+            answer = classifier(text)
+            st.write(answer)
 
+elif option == "Tłumaczenie tekstu z języka angielskiego na niemiecki":
+    text = st.text_area(label="Wpisz tekst do przetłumaczenia")
+    if text:
+        with st.spinner(text='Tłumaczę tekst...'):
+            translator = pipeline("translation_en_to_de")
+            translation = translator(text, max_length=40)[0]['translation_text']
+            st.write(translation)
 
-st.header('Tłumaczenie tekstu z języka angielskiego na niemiecki')
-st.write('Aby przetłumaczyć tekst z języka angielskiego na niemiecki, wpisz tekst w polu poniżej i naciśnij (na MAC OS command + enter))')
-
-
-model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
-
-text = st.text_area(label="Wpisz tekst do przetłumaczenia")
-if text:
-    st.spinner()
-    with st.spinner(text='Pracuję...'):
-        translator = pipeline("translation_en_to_de")
-        translation = translator(text, max_length=40)[0]['translation_text']
-        st.write(translation)
 
 
 st.write('s22418')
