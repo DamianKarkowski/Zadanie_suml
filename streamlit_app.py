@@ -10,8 +10,6 @@ st.success('Gratulacje! Z powodzeniem uruchomiłeś aplikację')
 
 st.title('Zadanie domowe')
 
-st.header('Wprowadzenie do zajęć')
-
 st.subheader('O Streamlit')
 
 st.text('To przykładowa aplikacja z wykorzystaniem Streamlit')
@@ -32,6 +30,10 @@ st.subheader('Wybierz jedną z opcji:')
 st.write('🐞 Wydźwięk emocjonalny tekstu (eng)')
 st.write('🐞 Tłumaczenie tekstu z języka angielskiego na niemiecki')
 
+st.write('🐞 Po wybraniu jednej z opcji wpisz tekst polu pod listą opcji i zatwierdź (na Mac Os ⌘ + Enter). '
+         'Gdy pojawią się balony wynik będzie gotowy.')
+
+
 
 option = st.selectbox(
     "Opcje",
@@ -48,6 +50,7 @@ if option == "Wydźwięk emocjonalny tekstu (eng)":
             classifier = pipeline("sentiment-analysis")
             answer = classifier(text)
             st.write(answer)
+            st.balloons()
 
 elif option == "Tłumaczenie tekstu z języka angielskiego na niemiecki":
     text = st.text_area(label="Wpisz tekst do przetłumaczenia")
@@ -56,6 +59,7 @@ elif option == "Tłumaczenie tekstu z języka angielskiego na niemiecki":
             translator = pipeline("translation_en_to_de")
             translation = translator(text, max_length=40)[0]['translation_text']
             st.write(translation)
+            st.balloons()
 
 
 
